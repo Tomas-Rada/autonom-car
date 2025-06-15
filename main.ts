@@ -4,8 +4,8 @@ type IRC = {
     p: DigitalPin
 }
 const min_vzdalenost:number = 20 //to do cm
-const motor_rovne_l:number = 250 //to do
-const motor_rovne_p:number = 250 //to do
+const motor_rovne_l:number = 157 //to do
+const motor_rovne_p:number = 200 //to do
 const IR: IRC = {
     l: DigitalPin.P1,
     c: DigitalPin.P8,
@@ -67,7 +67,7 @@ function o45(strana: number) {
 //jeď
 function jed(motor_p:number,motor_l:number){
     PCAmotor.MotorRun(PCAmotor.Motors.M1, motor_l)
-    PCAmotor.MotorRun(PCAmotor.Motors.M3, motor_p)
+    PCAmotor.MotorRun(PCAmotor.Motors.M4, -1*motor_p)
 }
 
 //automat
@@ -75,18 +75,26 @@ function automat(data_p: number, data_l: number, data_c: number) {
     //zabočení do prava
     if (data_l === 1 && data_p === 0) {
         jed(250,0)
+            while(data_c===1){
+        data_c = pins.digitalReadPin(IR.c);
+        basic.pause(500)
+    }
     }
 
     //zabočení do leva
     else if (data_l === 0 && data_p === 1) {
         jed(0,250)
+        while (data_c === 1) {
+            data_c = pins.digitalReadPin(IR.c);
+            basic.pause(500)
+        }
     }
 
     //jede po čáře
-    else if (data_l === 0 && data_p === 0) {
+    else if (data_c===1) {
         jed(motor_rovne_p,motor_rovne_l)
     }
-    basic.pause(20)
+
 }
 
 
@@ -112,64 +120,64 @@ basic.forever(function () {
     vzdalenost = sonar.ping(DigitalPin.P10, DigitalPin.P11, PingUnit.Centimeters)
 
 
-//překážka senzor zaznamená prěkážku
-if(vzdalenost<min_vzdalenost && !(vzdalenost===0)){
-    o90(1)
-    pins.servoWritePin(AnalogPin.P1, 90)//to do
-    basic.pause(500)
-    cas_jizda = input.runningTime()
-    objed()
-    cas_jizda = input.runningTime() - cas_jizda
-    o90(-1)
-    objed()
-    o90(-1)
-    jed(motor_rovne_p, motor_rovne_l)
-    basic.pause(cas_jizda)
-    o90(1)
-    pins.servoWritePin(AnalogPin.P1, 10)//to do
-    basic.pause(500)
-}
-
-//pravý i levý senzor odbočka 
-    //levá
-
-    else if (cesta===1 && data_l ===1) {
-        o45(1)
-        while(data_c===0){
-            jed(motor_rovne_p,motor_rovne_l)
-            data_c = pins.digitalReadPin(IR.c)
-            basic.pause(20)
-        }
-        while (data_l===0) {
-            jed(250, 0)
-            data_l = pins.digitalReadPin(IR.l)
-            basic.pause(20)
-        }
-
-        cesta=0
-    }
-
-    //pravá
-    else if (cesta === 2 && data_p === 1) {
-        o45(-1)
-        while (data_c === 0) {
-            jed(motor_rovne_p, motor_rovne_l)
-            data_c = pins.digitalReadPin(IR.c)
-            basic.pause(20)
-        }
-        while (data_p === 0) {
-            jed(0, 250)
-            data_p = pins.digitalReadPin(IR.p)
-            basic.pause(20)
-        }
-
-        cesta = 0
-    }
-    //rovně
-    else if (data_c === 1 && cesta === 3) {
-        jed(motor_rovne_p,motor_rovne_l)
-        basic.pause(100)
-    }
+////překážka senzor zaznamená prěkážku
+//if(vzdalenost<min_vzdalenost && !(vzdalenost===0)){
+//    o90(1)
+//    pins.servoWritePin(AnalogPin.P1, 90)//to do
+//    basic.pause(500)
+//    cas_jizda = input.runningTime()
+//    objed()
+//    cas_jizda = input.runningTime() - cas_jizda
+//    o90(-1)
+//    objed()
+//    o90(-1)
+//    jed(motor_rovne_p, motor_rovne_l)
+//    basic.pause(cas_jizda)
+//    o90(1)
+//    pins.servoWritePin(AnalogPin.P1, 10)//to do
+//    basic.pause(500)
+//}
+//
+////pravý i levý senzor odbočka 
+//    //levá
+//
+//    else if (cesta===1 && data_l ===1) {
+//        o45(1)
+//        while(data_c===0){
+//            jed(motor_rovne_p,motor_rovne_l)
+//            data_c = pins.digitalReadPin(IR.c)
+//            basic.pause(20)
+//        }
+//        while (data_l===0) {
+//            jed(250, 0)
+//            data_l = pins.digitalReadPin(IR.l)
+//            basic.pause(20)
+//        }
+//
+//        cesta=0
+//    }
+//
+//    //pravá
+//    else if (cesta === 2 && data_p === 1) {
+//        o45(-1)
+//        while (data_c === 0) {
+//            jed(motor_rovne_p, motor_rovne_l)
+//            data_c = pins.digitalReadPin(IR.c)
+//            basic.pause(20)
+//        }
+//        while (data_p === 0) {
+//            jed(0, 250)
+//            data_p = pins.digitalReadPin(IR.p)
+//            basic.pause(20)
+//        }
+//
+//        cesta = 0
+//    }
+//    //rovně
+//    else if (data_c === 1 && cesta === 3) {
+//        jed(motor_rovne_p,motor_rovne_l)
+//        basic.pause(100)
+//    }
 
 
     automat(data_p,data_l,data_c)
