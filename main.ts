@@ -73,41 +73,13 @@ function jed(motor_p: number, motor_l: number) {
 
 }
 //automat
-function automat(data_p: number, data_l: number, data_c: number) {
-    data_l = pins.digitalReadPin(IR.l);
-    console.log(data_l);
-    data_c = pins.digitalReadPin(IR.c);
-    console.log(data_c);
-    data_p = pins.digitalReadPin(IR.p);
-    console.log(data_p);
 
-    //zabočení do prava
-    if (data_l === 1 && data_p === 0) {
-        jed(100, 0)
-
-
-    }
-
-    //zabočení do leva
-    else if (data_l === 0 && data_p === 1) {
-        jed(0, 100)
-
-    }
-
-    else if (data_c === 1 && data_l === 0 && data_p === 0) {
-        // střed jede po čáře
-        jed(motor_rovne_p, motor_rovne_l)
-    }
-    else if (data_c === 1 && data_l === 1 && data_p === 0) {
-        // střed jede po čáře
-        jed(motor_rovne_p, motor_rovne_l)
-    }
     //    else {
     //        // čára ztracena, např. couvni nebo zastav
     //        jed(-100, -100)
     //    }
 
-}
+
 
 
 function objed() {
@@ -120,13 +92,18 @@ function objed() {
     basic.pause(1000)//to do o kolik přejet
 
 }
-
-
-basic.forever(function () {
+control.inBackground(function() {
+    basic.forever(function(){
     data_l = pins.digitalReadPin(IR.l);
     data_c = pins.digitalReadPin(IR.c);
     data_p = pins.digitalReadPin(IR.p);
     vzdalenost = sonar.ping(DigitalPin.P10, DigitalPin.P11, PingUnit.Centimeters)
+    })
+})
+
+
+basic.forever(function () {
+
 
 
     //překážka senzor zaznamená prěkážku
@@ -190,6 +167,34 @@ basic.forever(function () {
     }
 
 
-    automat(data_p, data_l, data_c)
 
+
+
+
+        //zabočení do prava
+        if (data_l === 1 && data_p === 0) {
+            jed(100, 0)
+
+
+        }
+
+        //zabočení do leva
+        else if (data_l === 0 && data_p === 1) {
+            jed(0, 100)
+
+        }
+
+        else if (data_c === 1 && data_l === 0 && data_p === 0) {
+            // střed jede po čáře
+            jed(motor_rovne_p, motor_rovne_l)
+        }
+        else if (data_c === 1 && data_l === 1 && data_p === 0) {
+            // střed jede po čáře
+            jed(motor_rovne_p, motor_rovne_l)
+        }
+        else if (data_c === 1 && data_l === 0 && data_p === 0) {
+            jed(motor_rovne_p, motor_rovne_l)
+        
+
+        }
 })
