@@ -4,7 +4,7 @@ type IRC = {
     p: DigitalPin
 }
 const min_vzdalenost: number = 20 //to do cm
-const motor_rovne_l: number = 157 * 0.75 //to do
+const motor_rovne_l: number = 175*0.75 //to do
 const motor_rovne_p: number = 200 * 0.75 //to do
 const IR: IRC = {
     l: DigitalPin.P1,
@@ -28,10 +28,10 @@ let vzdalenost: number = 0
 // příjmání další odbočky
 radio.onReceivedNumber(function (receivedNumber: number) {
     
-    if (123380923 === radio.receivedPacket(RadioPacketProperty.SerialNumber)) {
+//    if (123380923 === radio.receivedPacket(RadioPacketProperty.SerialNumber)) {
         cesta = receivedNumber
         basic.showNumber(cesta)
-    }
+//    }
 })
 
 //otočka 90°
@@ -136,14 +136,14 @@ basic.forever(function () {
 
     //zabočení do prava
     if (data_l === 1 && data_p === 0) {
-        jed(100, 0)
+        jed(motor_rovne_p*0.5, 0)
 
 
     }
 
     //zabočení do leva
     else if (data_l === 0 && data_p === 1) {
-        jed(0, 100)
+        jed(0, motor_rovne_l*0.5)
 
     }
 
@@ -151,7 +151,7 @@ basic.forever(function () {
         // střed jede po čáře
         jed(motor_rovne_p, motor_rovne_l)
     }
-    else if (data_c === 1 && data_l === 1 && data_p === 0) {
+    else if (data_c === 1 && data_l === 1 && data_p === 1) {
         // střed jede po čáře
         jed(motor_rovne_p, motor_rovne_l)
     }
