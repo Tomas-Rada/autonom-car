@@ -28,10 +28,10 @@ let vzdalenost: number = 0
 // příjmání další odbočky
 radio.onReceivedNumber(function (receivedNumber: number) {
     
-//    if (123380923 === radio.receivedPacket(RadioPacketProperty.SerialNumber)) {
+    if (123380923 === radio.receivedPacket(RadioPacketProperty.SerialNumber)) {
         cesta = receivedNumber
         basic.showNumber(cesta)
-//    }
+    }
 })
 
 //otočka 90°
@@ -67,14 +67,6 @@ function jed(motor_p: number, motor_l: number) {
     PCAmotor.MotorRun(PCAmotor.Motors.M4, motor_p)
 
 }
-//automat
-
-    //    else {
-    //        // čára ztracena, např. couvni nebo zastav
-    //        jed(-100, -100)
-    //    }
-
-
 
 
 function objed() {
@@ -102,22 +94,22 @@ basic.forever(function () {
 
 
     //překážka senzor zaznamená prěkážku
-    //if(vzdalenost<min_vzdalenost && !(vzdalenost===0)){
-    //    o90(1)
-    //    pins.servoWritePin(AnalogPin.P1, 90)//to do
-    //    basic.pause(500)
-    //    cas_jizda = input.runningTime()
-    //    objed()
-    //    cas_jizda = input.runningTime() - cas_jizda
-    //    o90(-1)
-    //    objed()
-    //    o90(-1)
-    //    jed(motor_rovne_p, motor_rovne_l)
-    //    basic.pause(cas_jizda)
-    //    o90(1)
-    //    pins.servoWritePin(AnalogPin.P1, 10)//to do
-    //    basic.pause(500)
-    //}
+    if(vzdalenost<min_vzdalenost && !(vzdalenost===0)){
+        o90(1)
+        pins.servoWritePin(AnalogPin.P1, 90)//to do
+        basic.pause(500)
+        cas_jizda = input.runningTime()
+        objed()
+        cas_jizda = input.runningTime() - cas_jizda
+        o90(-1)
+        objed()
+        o90(-1)
+        jed(motor_rovne_p, motor_rovne_l)
+        basic.pause(cas_jizda)
+        o90(1)
+        pins.servoWritePin(AnalogPin.P1, 10)//to do
+        basic.pause(500)
+    }
 
     //pravý i levý senzor odbočka 
     //levá
