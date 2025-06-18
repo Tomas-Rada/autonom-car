@@ -48,7 +48,7 @@ function o90(strana: number) {
     }
 
 }
-//j
+
 
 
 
