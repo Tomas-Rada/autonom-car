@@ -40,7 +40,7 @@ function o90(strana: number) {
         jed(motor_rovne_p*-1,motor_rovne_l*-1)
         basic.pause(250)
         jed(0,250)
-        basic.pause(550)
+        basic.pause(600)
         jed(motor_rovne_p, motor_rovne_l)
         basic.pause(500)
 
@@ -133,10 +133,16 @@ basic.forever(function () {
         cesta = 0
     }
     //rovně
-    else if (data_c === 1 && cesta === 3) {
+    else if (cesta === 3) {
         jed(motor_rovne_p,motor_rovne_l)
         basic.pause(200)
         cesta = 0
+    }
+    else if (cesta === 4) {
+        jed(motor_rovne_p*-1, motor_rovne_l*-1)
+        basic.pause(100)
+        cesta = 0
+        jed(motor_rovne_p, motor_rovne_l)
     }
 
 
