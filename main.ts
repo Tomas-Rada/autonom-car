@@ -37,16 +37,24 @@ radio.onReceivedNumber(function (receivedNumber: number) {
 //otočka 90°
 function o90(strana: number) {
     if (strana === 1) {
-        jed(250, 0)
-        basic.pause(20)//TO DO
+        jed(motor_rovne_p*-1,motor_rovne_l*-1)
+        basic.pause(250)
+        jed(0,250)
+        basic.pause(550)
+        jed(motor_rovne_p, motor_rovne_l)
+        basic.pause(500)
 
     }
     else {
-        jed(0, 250)
-        basic.pause(20)//TO DO
-
+        jed(motor_rovne_p * -1, motor_rovne_l * -1)
+        jed(motor_rovne_p * -1, motor_rovne_l * -1)
+        basic.pause(250)
+        jed(250,0)
+        basic.pause(550)
+        jed(motor_rovne_p, motor_rovne_l)
+        basic.pause(500)
     }
-
+    
 }
 
 
@@ -115,16 +123,20 @@ basic.forever(function () {
     //levá
     //else
     if (cesta === 1 && data_l === 1) {
-        o90(1)
+        o90(2)
+        cesta=0
     }
 
     //pravá
     else if (cesta === 2 && data_p === 1) {
-        o90(2)
+        o90(1)
+        cesta = 0
     }
     //rovně
     else if (data_c === 1 && cesta === 3) {
-        jed
+        jed(motor_rovne_p,motor_rovne_l)
+        basic.pause(200)
+        cesta = 0
     }
 
 
